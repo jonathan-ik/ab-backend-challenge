@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\jonat\\a1-consult-backend-v2\\src\\utils\\combined\\debug\\.77924d74ba88413b4fa557ef789adaf12884846a-audit.json",
+    "files": [
+        {
+            "date": 1719421192731,
+            "name": "C:\\Users\\jonat\\a1-consult-backend-v2\\src\\utils\\combined\\debug\\2024-06-26.log",
+            "hash": "fc19ced6ec52d976550560b6083c0efe4479b26db19b26cb5121ae58bf9595b8"
+        }
+    ],
+    "hashType": "sha256"
+}
