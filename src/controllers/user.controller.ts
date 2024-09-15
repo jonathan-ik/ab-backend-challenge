@@ -45,4 +45,14 @@ export class UserController {
       next(error);
     }
   };
+
+  public updateAvatarUrl = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const userId: string | undefined = String(req.user?.user_id);
+      await this.user.updateAvatarUrl(userId, req.body.avatarUrl);
+      res.status(200).json({ message: "Avatar updated" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

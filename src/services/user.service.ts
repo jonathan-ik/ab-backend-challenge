@@ -30,4 +30,10 @@ export class UserService extends Repository<UserEntity> {
     if (!deleteUser.length) throw new httpException(409, "User not found");
     return deleteUser[0];
   }
+  public async updateAvatarUrl(userId: string, avatarUrl: string): Promise<void> {
+    const query = `UPDATE user_entity SET avatar = $1 WHERE user_id = $2`;
+    await AppDataSource.query(query, [avatarUrl, userId]);
+    if (!query.length) throw new httpException(409, "User not found");
+    return;
+  }
 }

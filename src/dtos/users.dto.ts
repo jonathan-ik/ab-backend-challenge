@@ -3,7 +3,8 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  public name: string;
+  public first_name: string;
+  public last_name: string;
 
   @IsEmail()
   public email: string;

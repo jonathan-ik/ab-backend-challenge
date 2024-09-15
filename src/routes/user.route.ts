@@ -10,11 +10,11 @@ export class UserRoute {
   constructor() {
     this.initializeRoutes();
   }
-
   private initializeRoutes() {
     this.router.get(`${this.path}`, AuthMiddleware, this.user.getUsers);
     this.router.get(`${this.path}/details`, AuthMiddleware, this.user.getUserById);
     this.router.put(`${this.path}`, AuthMiddleware, this.user.updateUser);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.user.deleteUser);
+    this.router.put(`${this.path}/:id`, AuthMiddleware, this.user.updateAvatarUrl);
   }
 }

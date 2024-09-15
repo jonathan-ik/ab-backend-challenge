@@ -20,10 +20,12 @@ export class AuthController {
   public Login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: User = req.body;
-      const { cookie, findUser } = await this.auth.login(userData);
+      const { cookie, user: findUser } = await this.auth.login(userData);
       res.status(200).json({ data: findUser, token: cookie, message: "login" });
     } catch (error) {
       next(error);
     }
   };
+
+
 }
