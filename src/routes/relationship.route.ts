@@ -3,7 +3,6 @@ import { Router } from "express";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 export class RelationshipRoute {
-  public path = "/relationships";
   public router = Router();
   public relationship = new RelationshipController();
 
@@ -11,8 +10,9 @@ export class RelationshipRoute {
     this.initializeRoutes();
   }
   private initializeRoutes() {
-    this.router.get(`${this.path}/:userId`, AuthMiddleware, this.relationship.getRelationships);
-    this.router.post(`${this.path}/follow`, AuthMiddleware, this.relationship.followUser);
-    this.router.post(`${this.path}/unfollow`, AuthMiddleware, this.relationship.unfollowUser);
-  }
+    this.router.post("/follow/:id", AuthMiddleware, this.relationship.followUser);
+    this.router.post("/unfollow/:id", AuthMiddleware, this.relationship.unfollowUser);
+    this.router.get("/relationships/:id", AuthMiddleware, this.relationship.getRelationships);
+    this.router.get("/isFollowing/:id", AuthMiddleware, this.relationship.isFollowing);
+}
 }

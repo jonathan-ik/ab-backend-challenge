@@ -5,7 +5,7 @@ import { Routes } from './interface/routes.interface'
 import { createConnection } from 'typeorm'
 import { AppDataSource } from './database'
 import morgan, { FormatFn } from 'morgan'
-import cors from 'cors'
+import cors from 'cors';
 import hpp from 'hpp'
 import helmet from 'helmet'
 import compression from 'compression'

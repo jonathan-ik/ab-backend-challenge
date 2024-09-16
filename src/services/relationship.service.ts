@@ -84,16 +84,8 @@ export class RelationshipService extends Repository<RelationshipEntity> {
             WHERE r.user_id = $1 AND r.is_followed = true
         `;
         } else if (type === "friends") {
-            query = `
-            SELECT u.user_id, u.first_name, u.last_name, u.avatar
-            FROM public.user_entity u
-            WHERE u.user_id IN (
-                SELECT r1.friend_id
-                FROM public.relationship_entity r1
-                JOIN public.relationship_entity r2 ON r1.friend_id = r2.user_id
-                WHERE r1.user_id = $1 AND r2.friend_id = $1 AND r1.is_followed = true AND r2.is_followed = true
-            )
-        `;
+            query = `SELECT u.user_id, u.first_name, u.last_name, u.avatar FROM public.user_entity u WHERE u.user_id IN (SELECT r1.friend_id FROM public.relationship_entity r1
+        JOIN public.relationship_entity r2 ON r1.friend_id = r2.user_id WHERE r1.user_id = $1 AND r2.friend_id = $1)`
         } else {
             throw new Error('Invalid relationship type. Expected "followers", "following", or "friends".');
         }
@@ -101,4 +93,10 @@ export class RelationshipService extends Repository<RelationshipEntity> {
         const relationships: Relationship[] = await AppDataSource.query(query, [userId]);
         return relationships;
     }
+
+    public async isFollowing(userId: string, friendId: string): Promise<boolean> {
+        const query = `SELECT * FROM public.relationship_entity WHERE user_id = $1 AND friend_id = $2`;
+        const relationship: Relationship[] = await RelationshipEntity.query(query, [userId, friendId]);
+        return relationship.length > 0;
+      }
 }

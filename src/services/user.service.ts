@@ -3,8 +3,43 @@ import { UserEntity } from "../entities/users.entity";
 import { User } from "../interface/users.interface";
 import { AppDataSource } from "../database";
 import { httpException } from "../exceptions/httpException";
+import { v4 as uuidv4 } from 'uuid'; 
+import { hash, compare } from "bcrypt";
 
 export class UserService extends Repository<UserEntity> {
+
+  public async createUser(userData: User): Promise<User> {
+    // Check if the user already exists
+    const findUser: User[] = await AppDataSource.query(
+      `SELECT email FROM user_entity WHERE email = $1`, 
+      [userData.email]
+    );
+    if (findUser.length) throw new httpException(409, `This email ${userData.email} already exists`);
+  
+    // Hash the password
+    const hashedPassword = await hash(userData.password, 10);
+  
+    // Generate a unique user ID
+    const userId = `usr-${uuidv4()}`; 
+  
+    // Insert the new user into the database
+    const query = `
+      INSERT INTO public.user_entity(
+        user_id, first_name, last_name, email, password, phone_number, avatar
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7) 
+      RETURNING *`;
+  
+    const createdUser: User[] = await AppDataSource.query(query, [
+      userId,
+      userData.first_name,
+      userData.last_name,
+      userData.email,
+      hashedPassword,
+      userData.phone_number,
+      userData.avatar 
+    ]);
+    return createdUser[0];
+  }
   public async getUsers(): Promise<User[]> {
     return await AppDataSource.query(`SELECT * from user_entity`);
   }
